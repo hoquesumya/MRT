@@ -86,17 +86,20 @@ void Network::handle_client(const std::chrono::time_point
         auto res = getLossFile(start_time);
         double lastPktLoss = res.first;
         double lastBitError = res.second;
-
+        //creating a random number to determine if the packet will be lost
         std::random_device rand;  
          std::mt19937 gen(rand());  
          std::uniform_int_distribution<>dis(0.0, 1.0); 
          float temp = dis(gen);
+         std::cout<<"random for client is :"<<temp<<std::endl;
+        
          if (temp <= lastPktLoss){
             std::cout<<"packet loss occurrs client and not sending: "<<buffer.seq_<<std::endl;
             continue;
          }
                //send to server
         std::cout<<"sending seq: "<<buffer.seq_<<std::endl;
+        //sending th client data to the server
         if(sendto(this->clnt_sock, &buffer, sizeof(Playload),
             0, (const struct sockaddr *) &main_server,  
                 sizeof(sockaddr_in)) == -1){
@@ -107,7 +110,6 @@ void Network::handle_client(const std::chrono::time_point
 }
 void Network::handle_server(const std::chrono::time_point
  <std::chrono::high_resolution_clock> start_time){
-
  
     Playload buffer;
     socklen_t len_server = sizeof(main_server);
@@ -118,7 +120,7 @@ void Network::handle_server(const std::chrono::time_point
         ( struct sockaddr *) &main_server, &len_server);
         //server packet loss
 
-        /*auto res = getLossFile(start_time);
+        auto res = getLossFile(start_time);
         double lastPktLoss = res.first;
         double lastBitError = res.second;
 
@@ -131,7 +133,7 @@ void Network::handle_server(const std::chrono::time_point
             std::cout<<"packet loss occurrs server"<<std::endl;
             std::cout<<temp<<","<<lastPktLoss<<std::endl;
             continue;
-        }*/
+        }
         //send to client
         if(sendto(this->sockServer, &buffer, sizeof(Playload),
             0, (const struct sockaddr *) &cliaddr,  
