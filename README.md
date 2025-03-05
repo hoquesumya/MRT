@@ -6,6 +6,7 @@ This project aims at  designing and implementing mini relaiable trasport(MRT) pr
 4. fast transmission if the latency is high
 5. transmission of small or large amounts of data (segmentation is needed for sending a large amount of data);
 6. flow control (to avoid overflowing receiver buffer).
+[Demo Video](https://www.youtube.com/watch?v=Yi4qBSmEP_c)
 
 ## USAGE:
 1. Client Program:
